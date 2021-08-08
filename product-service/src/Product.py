@@ -23,11 +23,13 @@ def find_all(cls):
     return cls.query.all()
 
 
+@classmethod
 def save_to_db(self):
     db.session.add(self)
     db.session.commit()
 
 
+@classmethod
 def delete_from_db(self):
     db.session.delete(self)
     db.session.commit()
