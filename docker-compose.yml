@@ -1,0 +1,9 @@
+services:
+
+  productservice:
+    build: product-service
+
+  web:
+    build: nginx
+    ports:
+      - "80:80"
