@@ -1,17 +1,38 @@
+version: "3.9"
+
 services:
 
   productservice:
-    build: product-service
+    container_name: productservice
+    image: productservice
+    build:
+      context: product-service/
+    networks:
+      - wired-brain
 
   web:
-    build: nginx
+    image: web
+    container_name: web
+    build:
+      context: nginx/
     ports:
       - "80:80"
+    networks:
+      - wired-brain
 
   db:
-    image: mysql
-    command: "--init-file /data/application/init.sql --default-authentication-plugin=mysql_native_password"
+    container_name: db
+    image: mysql:8.0.26
+    command: "--default-authentication-plugin=mysql_native_password --init-file /data/application/init.sql"
     volumes:
       - "./db/init.sql:/data/application/init.sql"
     environment:
-      - MYSQL_ROOT_PASSWORD=password
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      - "9002:3306"
+    restart: always
+    networks:
+      - wired-brain
+
+networks:
+  wired-brain:
